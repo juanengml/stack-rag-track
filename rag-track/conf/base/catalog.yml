@@ -1,0 +1,69 @@
+# --------- EXTRAÇÃO (entradas e saídas) ---------
+pdf_files_list:
+  type: pickle.PickleDataSet
+  filepath: data/01_raw/pdf_files_list.pkl
+
+texts_partitioned:
+  type: PartitionedDataSet
+  path: s3://rag-track-raw/intermedio/txt
+  dataset: text.TextDataSet
+  filename_suffix: .txt
+  load_args:
+    encoding: utf-8
+  save_args:
+    encoding: utf-8
+  credentials: 
+    key: minio_access_key
+    secret: minio_secret_key
+  fs_args:
+    client_kwargs:
+      endpoint_url: http://192.168.0.48:9300
+
+converted_index:
+  type: json.JSONDataSet
+  filepath: s3://meu-bucket/intermedio/index/converted_index.json
+  credentials: 
+    key: minio_access_key
+    secret: minio_secret_key
+  fs_args:
+    client_kwargs:
+      endpoint_url: http://192.168.0.48:9300
+  versioned: true
+
+# --------- EMBEDDING (entradas e saídas) ---------
+embedding_report_raw:
+  type: pickle.PickleDataSet
+  filepath: data/02_intermediate/embedding_report_raw.pkl
+
+collections_used_raw:
+  type: pickle.PickleDataSet
+  filepath: data/02_intermediate/collections_used_raw.pkl
+
+embedding_report:
+  type: json.JSONDataSet
+  filepath: s3://meu-bucket/intermedio/reports/embedding_report.json
+  credentials: 
+    key: minio_access_key
+    secret: minio_secret_key
+  fs_args:
+    client_kwargs:
+      endpoint_url: http://192.168.0.48:9300
+  versioned: true
+
+collections_used:
+  type: json.JSONDataSet
+  filepath: s3://meu-bucket/intermedio/reports/collections_used.json
+  credentials: 
+    key: minio_access_key
+    secret: minio_secret_key
+  fs_args:
+    client_kwargs:
+      endpoint_url: http://192.168.0.48:9300
+  versioned: true
+
+# --------- credenciais MinIO ---------
+minio_creds:
+  key: minioadmin
+  secret: minioadmin
+  client_kwargs:
+    endpoint_url: http://192.168.0.48:9300
